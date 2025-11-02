@@ -8,6 +8,7 @@ import (
 
 const configFileName string = ".gatorconfig.json"
 
+// helper function to get config path
 func getConfigPath() string {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {

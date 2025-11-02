@@ -2,18 +2,51 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"sync"
 
+	"github.com/anxhukumar/gator-cli-tool/internal/cli"
 	"github.com/anxhukumar/gator-cli-tool/internal/config"
 )
 
 func main() {
 	// read config file
-	conf := config.Read()
+	conf, err := config.Read()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
-	// set current user
-	conf.SetUser("anxhukumar")
+	// create state of the current config
+	confState := cli.State{
+		ConfigPtr: &conf,
+	}
 
-	// read config again and print the output
-	updatedConfig := config.Read()
-	fmt.Println(updatedConfig)
+	// init commands struct
+	cmdsDir := cli.Commands{
+		Cmds: make(map[string]func(*cli.State, cli.Command) error),
+		Mu:   &sync.RWMutex{},
+	}
+
+	cmdsDir.Register("login", cli.HandlerLogin)
+
+	// get arguments
+	cliArgs := os.Args[1:]
+
+	if len(cliArgs) < 2 {
+		fmt.Println("Error: Missing arguments | Format: login <username>")
+		os.Exit(1)
+	}
+
+	// run commands
+	cmd := cli.Command{
+		Name:      cliArgs[0],
+		Arguments: []string{cliArgs[1]},
+	}
+
+	err = cmdsDir.Run(&confState, cmd)
+	if err != nil {
+		fmt.Println(err)
+	}
+
 }
