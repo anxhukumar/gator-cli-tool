@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"os"
 )
 
 func HandlerLogin(s *State, cmd Command) error {
@@ -19,7 +18,6 @@ func HandlerLogin(s *State, cmd Command) error {
 
 	_, err := s.Db.GetUser(context.Background(), userName)
 	if err != nil {
-		os.Exit(1)
 		return fmt.Errorf("couldn't find user: %w", err)
 	}
 

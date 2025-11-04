@@ -47,19 +47,21 @@ func main() {
 
 	cmdsDir.Register("login", cli.HandlerLogin)
 	cmdsDir.Register("register", cli.HandlerRegister)
+	cmdsDir.Register("reset", cli.HandlerReset)
 
-	// get arguments
-	cliArgs := os.Args[1:]
-
-	if len(cliArgs) < 2 {
+	// run commands
+	args := os.Args[1:]
+	if len(args) < 1 {
 		fmt.Println("Error: Missing arguments | Format: login <username>")
 		os.Exit(1)
 	}
 
-	// run commands
+	cmdName := args[0]
+	cmdArgs := args[1:]
+
 	cmd := cli.Command{
-		Name:      cliArgs[0],
-		Arguments: []string{cliArgs[1]},
+		Name:      cmdName,
+		Arguments: cmdArgs,
 	}
 
 	err = cmdsDir.Run(&confState, cmd)
