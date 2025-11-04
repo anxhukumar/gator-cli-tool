@@ -1,12 +1,15 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
 	"sync"
 
 	"github.com/anxhukumar/gator-cli-tool/internal/cli"
 	"github.com/anxhukumar/gator-cli-tool/internal/config"
+	"github.com/anxhukumar/gator-cli-tool/internal/database"
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -17,10 +20,24 @@ func main() {
 		return
 	}
 
+	// sql connection
+	db, err := sql.Open("postgres", conf.Db_url)
+
+	if err != nil {
+		fmt.Println("Database connection failed.", err)
+		return
+	}
+
 	// create state of the current config
 	confState := cli.State{
+		Db:        &database.Queries{},
 		ConfigPtr: &conf,
 	}
+
+	// db methods
+	dbQueries := database.New(db)
+
+	confState.Db = dbQueries
 
 	// init commands struct
 	cmdsDir := cli.Commands{
@@ -29,6 +46,7 @@ func main() {
 	}
 
 	cmdsDir.Register("login", cli.HandlerLogin)
+	cmdsDir.Register("register", cli.HandlerRegister)
 
 	// get arguments
 	cliArgs := os.Args[1:]

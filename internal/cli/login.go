@@ -1,8 +1,10 @@
 package cli
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"os"
 )
 
 func HandlerLogin(s *State, cmd Command) error {
@@ -14,11 +16,18 @@ func HandlerLogin(s *State, cmd Command) error {
 
 	// set username in the state config
 	userName := cmd.Arguments[0]
-	err := s.ConfigPtr.SetUser(userName)
+
+	_, err := s.Db.GetUser(context.Background(), userName)
+	if err != nil {
+		os.Exit(1)
+		return fmt.Errorf("couldn't find user: %w", err)
+	}
+
+	err = s.ConfigPtr.SetUser(userName)
 	if err != nil {
 		return err
 	}
-	fmt.Println("New user is set")
+	fmt.Println("User switched successfully")
 
 	return nil
 }
