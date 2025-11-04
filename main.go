@@ -48,6 +48,7 @@ func main() {
 	cmdsDir.Register("login", cli.HandlerLogin)
 	cmdsDir.Register("register", cli.HandlerRegister)
 	cmdsDir.Register("reset", cli.HandlerReset)
+	cmdsDir.Register("users", cli.HandlerGetUsers)
 
 	// run commands
 	args := os.Args[1:]
