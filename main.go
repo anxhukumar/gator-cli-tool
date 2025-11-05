@@ -50,6 +50,7 @@ func main() {
 	cmdsDir.Register("reset", cli.HandlerReset)
 	cmdsDir.Register("users", cli.HandlerGetUsers)
 	cmdsDir.Register("agg", cli.HandlerAgg)
+	cmdsDir.Register("addfeed", cli.HandlerAddFeed)
 
 	// run commands
 	args := os.Args[1:]
