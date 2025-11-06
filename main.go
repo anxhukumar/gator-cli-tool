@@ -52,6 +52,8 @@ func main() {
 	cmdsDir.Register("agg", cli.HandlerAgg)
 	cmdsDir.Register("addfeed", cli.HandlerAddFeed)
 	cmdsDir.Register("feeds", cli.HandlerListFeeds)
+	cmdsDir.Register("follow", cli.HandlerFollowFeed)
+	cmdsDir.Register("following", cli.HandlerFollowing)
 
 	// run commands
 	args := os.Args[1:]
