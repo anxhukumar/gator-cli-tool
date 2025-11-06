@@ -19,10 +19,10 @@ func HandlerAddFeed(s *State, cmd Command) error {
 		return err
 	}
 
-	nameArg := cmd.Arguments[0]
+	feedNameArg := cmd.Arguments[0]
 	urlArg := cmd.Arguments[1]
 
-	currentUser, err := s.Db.GetUser(context.Background(), nameArg)
+	currentUser, err := s.Db.GetUser(context.Background(), s.ConfigPtr.Current_user_name)
 	if err != nil {
 		return err
 	}
@@ -31,7 +31,7 @@ func HandlerAddFeed(s *State, cmd Command) error {
 		ID:        uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
-		Name:      nameArg,
+		Name:      feedNameArg,
 		Url:       urlArg,
 		UserID:    currentUser.ID,
 	}
