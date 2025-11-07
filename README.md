@@ -14,7 +14,7 @@ Before installing Gator, ensure you have the following installed on your system:
 
 Install Gator directly from GitHub using Go:
 ```bash
-go install github.com/anxhukumar/gator@latest
+go install github.com/anxhukumar/gator-cli-tool/cmd/gator@latest
 ```
 
 ## Configuration
