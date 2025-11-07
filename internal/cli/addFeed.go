@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/anxhukumar/gator-cli-tool/internal/database"
@@ -14,7 +13,6 @@ import (
 func HandlerAddFeed(s *State, cmd Command, user database.User) error {
 	// check if arguments are available
 	if len(cmd.Arguments) < 2 {
-		os.Exit(1)
 		err := errors.New("the addFeed handler expects a name and url argument")
 		return err
 	}

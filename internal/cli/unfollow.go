@@ -3,7 +3,6 @@ package cli
 import (
 	"context"
 	"errors"
-	"os"
 
 	"github.com/anxhukumar/gator-cli-tool/internal/database"
 )
@@ -11,7 +10,6 @@ import (
 func HandlerUnfollow(s *State, cmd Command, user database.User) error {
 	// check if arguments are available
 	if len(cmd.Arguments) == 0 {
-		os.Exit(1)
 		err := errors.New("the unfollow command expects a single url argument")
 		return err
 	}

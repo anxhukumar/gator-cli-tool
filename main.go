@@ -61,11 +61,6 @@ func main() {
 
 	// run commands
 	args := os.Args[1:]
-	if len(args) < 1 {
-		fmt.Println("Error: Missing arguments | Format: login <username>")
-		os.Exit(1)
-	}
-
 	cmdName := args[0]
 	cmdArgs := args[1:]
 
@@ -76,6 +71,7 @@ func main() {
 
 	err = cmdsDir.Run(&confState, cmd)
 	if err != nil {
+		os.Exit(1)
 		fmt.Println(err)
 	}
 

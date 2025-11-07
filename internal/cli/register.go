@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/anxhukumar/gator-cli-tool/internal/database"
@@ -30,7 +29,6 @@ func HandlerRegister(s *State, cmd Command) error {
 	// create user in db
 	userData, err := s.Db.CreateUser(context.Background(), user)
 	if err != nil {
-		os.Exit(1)
 		return fmt.Errorf("couldn't create user: %w", err)
 	}
 

@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/anxhukumar/gator-cli-tool/internal/database"
@@ -14,7 +13,6 @@ import (
 func HandlerFollowFeed(s *State, cmd Command, user database.User) error {
 	// check if arguments are available
 	if len(cmd.Arguments) == 0 {
-		os.Exit(1)
 		err := errors.New("the follow command expects a single url argument")
 		return err
 	}
