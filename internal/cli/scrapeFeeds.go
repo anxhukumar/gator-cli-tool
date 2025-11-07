@@ -2,11 +2,14 @@ package cli
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"fmt"
 	"time"
 
+	"github.com/anxhukumar/gator-cli-tool/internal/database"
 	"github.com/anxhukumar/gator-cli-tool/internal/rss"
+	"github.com/google/uuid"
 )
 
 func HandlerAgg(s *State, cmd Command) error {
@@ -51,10 +54,32 @@ func HandlerScrapeFeeds(s *State) error {
 		return err
 	}
 
-	//print titles to the console
 	for _, v := range fetchedData.Channel.Item {
-		fmt.Println(v.Title)
-		fmt.Println("----------")
+
+		t, _ := time.Parse(time.RFC1123Z, v.PubDate)
+
+		data := database.CreatePostParams{
+			ID:        uuid.New(),
+			CreatedAt: time.Now().UTC(),
+			UpdatedAt: time.Now().UTC(),
+			Title: sql.NullString{
+				String: v.Title,
+				Valid:  true,
+			},
+			Url: v.Link,
+			Description: sql.NullString{
+				String: v.Description,
+				Valid:  true,
+			},
+			PublishedAt: t,
+			FeedID:      feed.ID,
+		}
+
+		// create posts
+		_, err := s.Db.CreatePost(context.Background(), data)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
