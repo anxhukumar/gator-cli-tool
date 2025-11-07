@@ -11,16 +11,11 @@ import (
 	"github.com/google/uuid"
 )
 
-func HandlerFollowFeed(s *State, cmd Command) error {
+func HandlerFollowFeed(s *State, cmd Command, user database.User) error {
 	// check if arguments are available
 	if len(cmd.Arguments) == 0 {
 		os.Exit(1)
 		err := errors.New("the follow command expects a single url argument")
-		return err
-	}
-
-	user, err := s.Db.GetUser(context.Background(), s.ConfigPtr.Current_user_name)
-	if err != nil {
 		return err
 	}
 

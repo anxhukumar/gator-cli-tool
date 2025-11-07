@@ -11,7 +11,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func HandlerAddFeed(s *State, cmd Command) error {
+func HandlerAddFeed(s *State, cmd Command, user database.User) error {
 	// check if arguments are available
 	if len(cmd.Arguments) < 2 {
 		os.Exit(1)
@@ -22,18 +22,13 @@ func HandlerAddFeed(s *State, cmd Command) error {
 	feedNameArg := cmd.Arguments[0]
 	urlArg := cmd.Arguments[1]
 
-	currentUser, err := s.Db.GetUser(context.Background(), s.ConfigPtr.Current_user_name)
-	if err != nil {
-		return err
-	}
-
 	feedData := database.CreateFeedsParams{
 		ID:        uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
 		Name:      feedNameArg,
 		Url:       urlArg,
-		UserID:    currentUser.ID,
+		UserID:    user.ID,
 	}
 
 	feed, err := s.Db.CreateFeeds(context.Background(), feedData)
@@ -46,7 +41,7 @@ func HandlerAddFeed(s *State, cmd Command) error {
 		ID:        uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
-		UserID:    currentUser.ID,
+		UserID:    user.ID,
 		FeedID:    feed.ID,
 	}
 
