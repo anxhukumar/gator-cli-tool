@@ -46,6 +46,7 @@ func main() {
 		Mu:   &sync.RWMutex{},
 	}
 
+	// registering commands
 	cmdsDir.Register("login", cli.HandlerLogin)
 	cmdsDir.Register("register", cli.HandlerRegister)
 	cmdsDir.Register("reset", cli.HandlerReset)
