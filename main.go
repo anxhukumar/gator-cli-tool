@@ -55,6 +55,7 @@ func main() {
 	cmdsDir.Register("feeds", cli.HandlerListFeeds)
 	cmdsDir.Register("follow", middlewareLoggedIn(cli.HandlerFollowFeed))
 	cmdsDir.Register("following", middlewareLoggedIn(cli.HandlerFollowing))
+	cmdsDir.Register("unfollow", middlewareLoggedIn(cli.HandlerUnfollow))
 
 	// run commands
 	args := os.Args[1:]
